@@ -30,7 +30,7 @@ const calendarRoutes = require('./routes/calendar')
 
 //  config
 const port = parseInt(process.env.PORT, 10) || 8000
-const baseUrl = process.env.BASE_URL + port + '/api'
+const baseUrl = process.env.DEPLOY_URL + port + '/api'
 
 // ********** Init Server **********
 
@@ -44,12 +44,12 @@ app
   .use(cors(corsOptions))
   .use(express.json())
   .use(cookieParser())
+  // Routes
+  .use(provisionRoutes)
+  .use(userRoutes) // moved for NGRX implementation test
   // Verify Token
   .get('*', isValidUser)
   .get('/api/jwtid', isAccessGranted)
-  // Routes
-  .use(userRoutes)
-  .use(provisionRoutes)
   .use(calendarRoutes)
 
 // starting app
